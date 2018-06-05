@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from shareIdea.models import *
+from .models import userProfile
 
 
 class userProfileSerializer(serializers.ModelSerializer):

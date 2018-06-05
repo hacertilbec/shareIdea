@@ -9,6 +9,9 @@ from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import JSONParser
 from shareIdea.models import *
 from shareIdea.serializers import *
+from .models import *
+from .serializers import *
+
 
 @csrf_exempt
 def userProfile_list(request):
@@ -27,6 +30,7 @@ def userProfile_list(request):
             serializer.save()
             return JsonResponse(serializer.data, status=201)
         return JsonResponse(serializer.errors, status=400)
+
 
 @csrf_exempt
 def userProfile_detail(request, pk):
@@ -56,7 +60,11 @@ def userProfile_detail(request, pk):
 
 
 @csrf_exempt
+<<<<<<< HEAD
 def project_list(request):
+=======
+def projects_list(request):
+>>>>>>> origin/master
     """
     List all code snippets, or create a new snippet.
     """
@@ -73,28 +81,54 @@ def project_list(request):
             return JsonResponse(serializer.data, status=201)
         return JsonResponse(serializer.errors, status=400)
 
+<<<<<<< HEAD
 @csrf_exempt
 def project_detail(request, pk):
+=======
+
+@csrf_exempt
+def project_details(request, pk):
+>>>>>>> origin/master
     """
     Retrieve, update or delete a code snippet.
     """
     try:
+<<<<<<< HEAD
         project = Project.objects.get(pk=pk)
     except Project.DoesNotExist:
         return HttpResponse(status=404)
 
     if request.method == 'GET':
         serializer = ProjectSerializer(project)
+=======
+        user = Project.objects.get(pk=pk)
+    except userProfile.DoesNotExist:
+        return HttpResponse(status=404)
+
+    if request.method == 'GET':
+        serializer = ProjectSerializer(user)
+>>>>>>> origin/master
         return JsonResponse(serializer.data)
 
     elif request.method == 'PUT':
         data = JSONParser().parse(request)
+<<<<<<< HEAD
         serializer = ProjectSerializer(project, data=data)
+=======
+        serializer = ProjectSerializer(user, data=data)
+>>>>>>> origin/master
         if serializer.is_valid():
             serializer.save()
             return JsonResponse(serializer.data)
         return JsonResponse(serializer.errors, status=400)
 
     elif request.method == 'DELETE':
+<<<<<<< HEAD
         project.delete()
         return HttpResponse(status=204)
+=======
+        user.delete()
+        return HttpResponse(status=204)
+
+
+>>>>>>> origin/master
