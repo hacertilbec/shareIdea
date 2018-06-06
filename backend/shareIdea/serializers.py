@@ -11,7 +11,7 @@ class userProfileSerializer(serializers.ModelSerializer):
 class ProjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = Project
-        fields = ("owner","title","description","language","starred_comment","created")
+        fields = ("title","description","language","starred_comment","created")
 
 
 # We can also serialize querysets instead of model instances. To do so we simply add a many=True flag to the serializer arguments.

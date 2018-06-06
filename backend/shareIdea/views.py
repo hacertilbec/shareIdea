@@ -29,19 +29,6 @@ def userProfile_list(request):
         return JsonResponse(serializer.errors, status=400)
 
 
-def register(request):
-    if request.method == "POST":
-        data = JSONParser().parse(request)
-        serializer = userProfileSerializer(data=data)
-        if serializer.is_valid():
-            allUsers = userProfile.objects.all()
-            allUserSerializer = userProfileSerializer(allUsers, many=True)
-            for i in range(len(allUserSerializer.data)):
-                if allUserSerializer.data[i]["email"]==serializer.data["email"] and allUserSerializer.data[i]["password"]==serializer.data["password"]:
-                    return JsonResponse(allUserSerializer.data, status=201)
-            return JsonResponse(serializer.errors, status=400)
-        return JsonResponse(serializer.errors, status=400)
-
 
 @csrf_exempt
 def userProfile_detail(request, pk):
@@ -113,38 +100,51 @@ def project_detail(request, pk):
         project.delete()
         return HttpResponse(status=204)
 
-
-def show_users(request):
-    all_users = userProfile.objects.all()
-    template = '<html>'
-    for user in all_users:
-        template += str(user) + '<br><pre>    - My Projects: '
-        for project in user.my_projects.all():
-            template += str(project) + ', '
-        template += '<pre>'
-        template += '<pre>    - Other Projects: '
-        for project in user.other_projects.all():
-            template += str(project) + ', '
-        template += '<pre><br><br>'
-    template += '</html>'
-    return HttpResponse(template)
+def register(request):
+    if request.method == "POST":
+        data = JSONParser().parse(request)
+        serializer = userProfileSerializer(data=data)
+        if serializer.is_valid():
+            allUsers = userProfile.objects.all()
+            allUserSerializer = userProfileSerializer(allUsers, many=True)
+            for i in range(len(allUserSerializer.data)):
+                if allUserSerializer.data[i]["email"]==serializer.data["email"] and allUserSerializer.data[i]["password"]==serializer.data["password"]:
+                    return JsonResponse(allUserSerializer.data, status=201)
+            return JsonResponse(serializer.errors, status=400)
+        return JsonResponse(serializer.errors, status=400)
 
 
-def user_register(reqeust, name, surname):
-    user_1 = userProfile(name=name, surname=surname)
-    user_1.save()
-    all_users = userProfile.objects.all()
-    return HttpResponse(all_users)
+# def show_users(request):
+#     all_users = userProfile.objects.all()
+#     template = '<html>'
+#     for user in all_users:
+#         template += str(user) + '<br><pre>    - My Projects: '
+#         for project in user.my_projects.all():
+#             template += str(project) + ', '
+#         template += '<pre>'
+#         template += '<pre>    - Other Projects: '
+#         for project in user.other_projects.all():
+#             template += str(project) + ', '
+#         template += '<pre><br><br>'
+#     template += '</html>'
+#     return HttpResponse(template)
 
 
-def project_create(request, title, owner):
-    owner = userProfile.objects.get(name=owner)
-    owner.my_projects.create(title=title)
-    return HttpResponse(Project.objects.all())
+# def user_register(reqeust, name, surname):
+#     user_1 = userProfile(name=name, surname=surname)
+#     user_1.save()
+#     all_users = userProfile.objects.all()
+#     return HttpResponse(all_users)
 
-
-def project_participate(request, title, participant):
-    participant = userProfile.objects.get(name=participant)
-    project = Project.objects.get(title=title)
-    participant.other_projects.add(project)
-    return HttpResponse(Project.objects.all())
+#
+# def project_create(request, title, owner):
+#     owner = userProfile.objects.get(name=owner)
+#     owner.my_projects.create(title=title)
+#     return HttpResponse(Project.objects.all())
+#
+#
+# def project_participate(request, title, participant):
+#     participant = userProfile.objects.get(name=participant)
+#     project = Project.objects.get(title=title)
+#     participant.other_projects.add(project)
+#     return HttpResponse(Project.objects.all())
