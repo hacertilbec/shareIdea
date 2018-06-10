@@ -3,7 +3,6 @@ from __future__ import unicode_literals
 
 from django.db import models
 
-
 class Project(models.Model):
     title = models.CharField(max_length=100, blank=True, default='')
     description = models.CharField(max_length=300, blank=True, default='')
@@ -19,8 +18,8 @@ class Project(models.Model):
 
 
 class userProfile(models.Model):
-    my_projects = models.ManyToManyField(Project, related_name='my_projects')
-    other_projects = models.ManyToManyField(Project, related_name='other_projects')
+    my_projects = models.ManyToManyField(Project, related_name='project_owner')
+    other_projects = models.ManyToManyField(Project, related_name='participant')
     created = models.DateTimeField(auto_now_add=True)
     name = models.CharField(max_length=100, blank=True, default='')
     surname = models.CharField(max_length=100, blank=True, default='')
